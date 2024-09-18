@@ -1,0 +1,3 @@
+steam_token: 'xxx'
+steam_id: 'xxx'
+emby_report: 'https://{host}/emby/user_usage_stats/submit_custom_query?api_key={api_key}'

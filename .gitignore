@@ -1,0 +1,4 @@
+*.db
+backend/config.yaml
+*/nohup.out
+*__pycache__*
