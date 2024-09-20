@@ -28,27 +28,29 @@ import sys
 # }
 
 def steam_games_update(tocken,steamid):
+
     db = database.SessionLocal()
+    last_res = db.query(models.SteamQuery).order_by(models.SteamQuery.create_time.desc()).first()
 
     url = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=%s&steamid=%s&format=json&include_appinfo=1&include_played_free_games=1" % (tocken,steamid)
-    results_str = requests.request("GET", url, headers={}, data={})
+    results_str = requests.request("GET", url, headers={}, data={}).text
     if results_str:
         steam_query = models.SteamQuery(create_time=round(time.time()),games=results_str)
         db.add(steam_query)
         db.commit()
         db.refresh(steam_query)
 
-    last_res = db.query(models.SteamQuery).order_by(models.SteamQuery.create_time.desc()).first()
+    
     if last_res and results_str:
         results_json = json.loads(results_str)['response']['games']
         last_res_json = json.loads(last_res.games)['response']['games']
         last_res_dt = {i['appid']:i for i in last_res_json}
         for game in results_json:
+            duartion = -1
             if game['appid'] in last_res_dt and game['playtime_forever'] > last_res_dt[game['appid']]['playtime_forever']:
                 duartion = game['playtime_forever'] - last_res_dt[game['appid']]['playtime_forever']
             elif game['appid'] not in last_res_dt and game['playtime_forever'] > 0:
                 duartion = game['playtime_forever']
-            
             if duartion>0:
                 record = models.SteamGameRecord(
                         appid = game['appid'],
