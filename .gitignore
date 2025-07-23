@@ -2,3 +2,4 @@
 backend/config.yaml
 */nohup.out
 *__pycache__*
+test.py

@@ -21,6 +21,6 @@ class SteamGameRecord(Base):
     playtime_linux = Column(Integer)
     playtime_deck = Column(Integer)
     rtime_last_played = Column(Integer)
-    rtime_last_palyed_start = Column(Integer)
-    rtime_last_palyed_duration = Column(Integer)
+    rtime_last_played_start = Column(Integer)
+    rtime_last_played_duration = Column(Integer)
 

@@ -59,7 +59,7 @@ def read_root():
 
 @app.get("/test")
 def get_record_year():
-    return CRUD.GetPlayRecordYear()
+    return CRUD.get_play_record_year()
 
 @app.get("/emby_report")
 def get_emby_report():
@@ -74,7 +74,6 @@ ORDER BY date(DateCreated) ASC'''
         }
     res = requests.post(url,json=data,verify=False)
     return res.json()['results']
-
 
 if __name__ == '__main__':
     uvicorn.run(app='main:app', host="127.0.0.1", port=8066, reload=True, )
